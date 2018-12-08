@@ -91,8 +91,8 @@ int main(int argc, const char *argv[])
         Polygon secondShape(shapeTwo, secondShapeCount);
         Polygon thirdShape;
 
-        thirdShape = firstShape+secondShape; 
-        std::cout << thirdShape.getArea() << std::endl;
+        thirdShape = firstShape+secondShape;
+        std::cout << std::setprecision(4) << thirdShape.getArea() << std::endl;
 
         delete[] arrayOfCoords;
         delete[] shapeOne;

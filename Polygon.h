@@ -9,7 +9,7 @@ class Polygon : public Shape
 public:
   Polygon(Point q[], int count) : m_a(q), m_c(count) {}
   Polygon() : m_a(0), m_c(0) {}
-  //~Polygon() {delete[] m_a;}
+  //~Polygon() {delete[] m_a;} // Couldn't get this work. Deleting in main.cpp worked though.
   std::string getType();
   double getArea();
   double getCircumference();
