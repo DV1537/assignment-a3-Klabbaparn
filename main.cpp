@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cmath>
 #include <string>
 #include "Functions.h"
@@ -44,66 +45,60 @@ int main(int argc, const char *argv[])
         std::cout << "File is missing a coordinate" << std::endl;
         return (EXIT_FAILURE);
     }
-    count = count / 2;
-    Point *arrayOfCoords = new Point[count]; //Allocate a dynamic memory array
     f.clear();
     f.seekg(0); //Rewind the file
-
-    int j = 0;
+    count = count / 2;
+    Point *arrayOfCoords = new Point[count];
     double x = 0;
     double y = 0;
-    while (f >> x >> y)
+    int firstShapeCount = 0;
+    int secondShapeCount = 0;
+    bool firstShapeFilled = false;
+    std::string line;
+    while (std::getline(f, line))
     {
-        Point p(x, y);
-        arrayOfCoords[j] = p;
-        j++;
+        std::istringstream iss(line);
+        if (!firstShapeFilled)
+        {
+            while (iss >> x >> y)
+            {
+                Point p(x, y);
+                arrayOfCoords[firstShapeCount++] = p;
+                firstShapeFilled = true;
+            }
+        }
+        else
+        {
+            secondShapeCount = firstShapeCount;
+            while (iss >> x >> y)
+            {
+                Point p(x, y);
+                arrayOfCoords[secondShapeCount++] = p;
+            }
+        }
     }
     f.close(); //Close file
+    secondShapeCount = secondShapeCount-firstShapeCount;
+    Point *shapeOne = new Point[firstShapeCount];
+    Point *shapeTwo = new Point[secondShapeCount];
+    for (int h = 0; h < firstShapeCount; h++)
+        shapeOne[h] = arrayOfCoords[h];
+    int my = firstShapeCount;
+    for (int w = 0; w < secondShapeCount; w++)
+        shapeTwo[w] = arrayOfCoords[my++];
 
-    OnePoint myOnePoint(arrayOfCoords[0]);
-    Line myLine(arrayOfCoords[0], arrayOfCoords[1]);
-    Triangle myTriangle(arrayOfCoords[0], arrayOfCoords[1], arrayOfCoords[2]);
-    Polygon myPolygon(arrayOfCoords, count);
+        Polygon firstShape(shapeOne, firstShapeCount);
+        Polygon secondShape(shapeTwo, secondShapeCount);
+        Polygon thirdShape;
 
-    if (count > 3)
-    {
-        std::cout << std::fixed;
-        std::cout << std::setprecision(3);
-        std::cout << "Shape is a " << myPolygon.getType() << std::endl;
-        std::cout << "Area is " << myPolygon.getArea() << std::endl;
-        std::cout << "Circumference is " << myPolygon.getCircumference() << std::endl;
-        std::cout << "Centerposition is (" << myPolygon.getPosition().getX() << ", " << myPolygon.getPosition().getY() << ")" << std::endl;
-        if(!myPolygon.isConvex())
-        std::cout << "The polygon is concave" << std::endl;
-        else
-        std::cout << "The polygon is convex" << std::endl;
-    }
-    if (count == 3)
-    {
-        std::cout << std::fixed;
-        std::cout << std::setprecision(3);
-        std::cout << "Shape is a " << myTriangle.getType() << std::endl;
-        std::cout << "Area is " << myTriangle.getArea() << std::endl;
-        std::cout << "Circumference is " << myTriangle.getCircumference() << std::endl;
-        std::cout << "Centerposition is (" << myTriangle.getPosition().getX() << ", " << myTriangle.getPosition().getY() << ")" << std::endl;
-    }
-    if (count == 2)
-    {
-        std::cout << std::fixed;
-        std::cout << std::setprecision(3);
-        std::cout << "Shape is a " << myLine.getType() << std::endl;
-        std::cout << "Area is " << myLine.getArea() << std::endl;
-        std::cout << "Circumference is " << myLine.getCircumference() << std::endl;
-        std::cout << "Centerposition is (" << myLine.getPosition().getX() << ", " << myLine.getPosition().getY() << ")" << std::endl;
-    }
-    if (count == 1)
-    {
-        std::cout << std::fixed;
-        std::cout << std::setprecision(3);
-        std::cout << "Shape is a " << myOnePoint.getType() << std::endl;
-        std::cout << "Area is " << myOnePoint.getArea() << std::endl;
-        std::cout << "Circumference is " << myOnePoint.getCircumference() << std::endl;
-        std::cout << "Centerposition is (" << myOnePoint.getPosition().getX() << ", " << myOnePoint.getPosition().getY() << ")" << std::endl;
-    }
+        thirdShape = firstShape+secondShape; 
+        std::cout << thirdShape.getArea() << std::endl;
+
+        delete[] arrayOfCoords;
+        delete[] shapeOne;
+        delete[] shapeTwo;
+        arrayOfCoords = nullptr;
+        shapeOne = nullptr;
+        shapeTwo = nullptr;
     return 0;
 }

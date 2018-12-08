@@ -19,3 +19,4 @@ int countOfChar(std::string s, char c)
             count++;
     return count;
 }
+

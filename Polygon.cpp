@@ -22,7 +22,7 @@ double Polygon::getArea()
     if (area == 0 || !isConvex())
         area = -1;
     else
-        return area = fabs(area / 2.0);
+        area = fabs(area / 2);
     return area;
 }
 
@@ -87,7 +87,7 @@ bool Polygon::isConvex()
         return true;
 }
 
-Polygon Polygon::operator+(const Point& rhs)
+Polygon Polygon::operator+(const Point &rhs)
 {
     const int count = this->m_c + 1;
     Point *newArray = new Point[count];
@@ -98,26 +98,26 @@ Polygon Polygon::operator+(const Point& rhs)
     return Polygon(newArray, count);
 }
 
-Polygon Polygon::operator+(const Polygon& rhs)
+Polygon Polygon::operator+(const Polygon &rhs)
 {
     const int size = this->m_c + rhs.m_c;
     Point *temp = new Point[size];
     for (int i = 0; i < this->m_c; i++)
         temp[i] = this->m_a[i];
     for (int j = this->m_c; j < size; j++)
-        temp[j] = rhs.m_a[j-this->m_c];
+        temp[j] = rhs.m_a[j - this->m_c];
     Polygon p(temp, size);
     return p;
 }
 
-std::ostream& operator<<(std::ostream& os, const Polygon& rhs)
+std::ostream &operator<<(std::ostream &os, const Polygon &rhs)
 {
-    for(int i = 0; i < rhs.m_c; i++)
-    os << "(" << rhs.m_a[i].getX() << "," << rhs.m_a[i].getY() << ") ";
+    for (int i = 0; i < rhs.m_c; i++)
+        os << "(" << rhs.m_a[i].getX() << "," << rhs.m_a[i].getY() << ") ";
     return os;
 }
 
-void Polygon::operator=(const Polygon& rhs)
+void Polygon::operator=(const Polygon &rhs)
 {
     m_a = rhs.m_a;
     m_c = rhs.m_c;
