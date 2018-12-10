@@ -9,6 +9,7 @@ std::string Polygon::getType()
     std::string myShape = "Polygon";
     return myShape;
 }
+
 double Polygon::getArea()
 {
     int vertices = m_c;
@@ -101,13 +102,12 @@ Polygon Polygon::operator+(const Point &rhs)
 Polygon Polygon::operator+(const Polygon &rhs)
 {
     const int size = this->m_c + rhs.m_c;
-    Point *temp = new Point[size];
+	Point *temp = new Point[size];
     for (int i = 0; i < this->m_c; i++)
         temp[i] = this->m_a[i];
     for (int j = this->m_c; j < size; j++)
         temp[j] = rhs.m_a[j - this->m_c];
-    Polygon p(temp, size);
-    return p;
+    return Polygon(temp, size);
 }
 
 std::ostream &operator<<(std::ostream &os, const Polygon &rhs)
@@ -119,6 +119,8 @@ std::ostream &operator<<(std::ostream &os, const Polygon &rhs)
 
 void Polygon::operator=(const Polygon &rhs)
 {
-    m_a = rhs.m_a;
-    m_c = rhs.m_c;
+	m_c = rhs.m_c;
+	m_a = new Point[rhs.m_c];
+	for (int k = 0; k < rhs.m_c; k++)
+		m_a[k] = rhs.m_a[k];
 }

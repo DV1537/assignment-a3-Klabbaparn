@@ -1,5 +1,8 @@
-.vscode/*
+.vs/*
+x64/*
+Debug/*
+Release/*
+*.vcxproj.filters
+*.vcxproj.user
 *.exe
-makefile
 *.7z
-gammalt/

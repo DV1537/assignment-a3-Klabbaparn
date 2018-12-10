@@ -14,6 +14,7 @@
 
 int main(int argc, const char *argv[])
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     if (argc < 2)
     {
         std::cout << "Wrong amount of arguments"; //fail-checking
@@ -78,7 +79,7 @@ int main(int argc, const char *argv[])
         }
     }
     f.close(); //Close file
-    secondShapeCount = secondShapeCount-firstShapeCount;
+    secondShapeCount = secondShapeCount - firstShapeCount;
     Point *shapeOne = new Point[firstShapeCount];
     Point *shapeTwo = new Point[secondShapeCount];
     for (int h = 0; h < firstShapeCount; h++)
@@ -87,18 +88,14 @@ int main(int argc, const char *argv[])
     for (int w = 0; w < secondShapeCount; w++)
         shapeTwo[w] = arrayOfCoords[my++];
 
-        Polygon firstShape(shapeOne, firstShapeCount);
-        Polygon secondShape(shapeTwo, secondShapeCount);
-        Polygon thirdShape;
+    Polygon firstShape(shapeOne, firstShapeCount);
+    Polygon secondShape(shapeTwo, secondShapeCount);
 
-        thirdShape = firstShape+secondShape;
-        std::cout << std::setprecision(4) << thirdShape.getArea() << std::endl;
+	Polygon thirdShape;
+	thirdShape = firstShape + secondShape;
+    std::cout << std::setprecision(4) << thirdShape.getArea() << std::endl;
+	delete[] arrayOfCoords;
+	arrayOfCoords = nullptr;
 
-        delete[] arrayOfCoords;
-        delete[] shapeOne;
-        delete[] shapeTwo;
-        arrayOfCoords = nullptr;
-        shapeOne = nullptr;
-        shapeTwo = nullptr;
     return 0;
 }
